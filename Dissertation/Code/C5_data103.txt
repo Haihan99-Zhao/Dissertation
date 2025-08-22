@@ -1,0 +1,55 @@
+!Numbers
+nbNodes:8       !number of nodes
+nbChargings: 1  !number of charging stations
+nbConsumers: 5  !number of customers
+nbVehicles: 3   !number of used vehicles
+nbStages: 3     !number of stages
+Bdepot: 1       !index of start depot
+Edepot: 8       !index of end depot
+
+!Time-independent Parameters
+Q   : 77.75     !E-Transit's average battery capacity(kWh) and same as data in dataset
+Ce  : 0.5       !Unit electricity price(£/kWh)
+Cv  : 45000     !Vehicle purchase price(£)
+Ch  : 0.8       !Holding cost per day(£/km)
+Cb  : 8000      !E-Transit's Battery swapping cost(£)
+delta : 0.00006 !user-defined data, Battery calender aging ratio
+sl  : 225       !working days in a stage
+r   : 1.2       !inverse charging rate
+M   : 1326      !largest te
+!beta_0 : 1     !we use once for discovering routing changes, (EkmB)
+beta_0 : 0.168  !Constant factor for SoH
+beta_1 : 0.06   !Linear term coefficient for SoH
+beta_2 : 0.19   !Quadratic term coefficient for SoH
+lambda_f : 0.00005  ! user-defined data, Ageing coefficient for once fast charging
+lambda_n : 0.00003  ! user-defined data, Ageing coefficient for once normal charging
+
+d : [0.00 10.00 30.81 12.81 35.00 15.00 24.02 0.00
+10.00 0.00 37.54 20.59 36.40 5.00 25.63 10.00
+30.81 37.54 0.00 36.40 62.64 41.40 52.55 30.81
+12.81 20.59 36.40 0.00 26.25 25.08 16.64 12.81
+35.00 36.40 62.64 26.25 0.00 38.08 11.05 35.00
+15.00 5.00 41.40 25.08 38.08 0.00 27.78 15.00
+24.02 25.63 52.55 16.64 11.05 27.78 0.00 24.02
+0.00 10.00 30.81 12.81 35.00 15.00 24.02 0.00]
+
+t : [0.00 10.00 30.81 12.81 35.00 15.00 24.02 0.00
+10.00 0.00 37.54 20.59 36.40 5.00 25.63 10.00
+30.81 37.54 0.00 36.40 62.64 41.40 52.55 30.81
+12.81 20.59 36.40 0.00 26.25 25.08 16.64 12.81
+35.00 36.40 62.64 26.25 0.00 38.08 11.05 35.00
+15.00 5.00 41.40 25.08 38.08 0.00 27.78 15.00
+24.02 25.63 52.55 16.64 11.05 27.78 0.00 24.02
+0.00 10.00 30.81 12.81 35.00 15.00 24.02 0.00]
+
+
+tb: [0 0 0 67 989 0 0 0]    ! Service time
+te: [1236 1226 1205 229 1153 1221 1236 1236]    ! Time windows
+ts: [0 90 90 90 90 90 0 0 ]
+
+alpha5 : [0.83425 0.83425 0.8455] ! Rolling SoH for stage 5
+EkmB: 0.168     ! energy consumption
+!EkmB: 1
+alphaS: 0.93    ! Different SoH initializations
+alphaB: 1       ! SoH for a new battery
+min_alpha : 0.8 ! battery health control policy

@@ -1,0 +1,234 @@
+model "Put-in using solution of Deterministic"
+ uses "mmxprs", "mmnl", "mmxnlp"
+
+filename := "C5_data103.txt";
+!filename := "C10_data101.txt";
+!filename := "C5_data101.txt";
+!filename := "C5_data206.txt";
+
+! Variable declarations
+declarations
+  ! Numbers
+  nbNodes: integer     ! Number of all nodes
+  nbVehicles: integer  ! Number of vehicles
+  nbStages: integer    ! Number of scenarios
+  Bdepot: integer      ! Index of beginning depot
+  Edepot: integer      ! Index of ending depot
+end-declarations
+
+initializations from filename
+  nbNodes  nbVehicles nbStages Bdepot Edepot
+end-initializations
+
+declarations
+  ! Set declarations
+
+  ! Set of nodes
+  Nodes = 1..nbNodes
+
+  ! Index of Consumers
+  !Consumers = 2..11    ! C10 101
+  !Consumers = 2..6      ! C5 101
+  Consumers = 2..6      ! C5 103
+  !Consumers = 2..6      ! C5 206
+
+  ! Index of Charging stations
+  !Chargings = 12..15   ! C10 101
+  !Chargings = 7..8      ! C5 101
+  Chargings = 7..7      ! C5 103
+  !Chargings = 7..9      ! C5 206
+
+
+  Vehicles = 1..nbVehicles          ! Set of vehicles
+  Stages = 1..nbStages              ! Set of scenarios
+
+  ! Time-independent Parameters
+  Q: real   ! Capacity for new Battery
+  Ce: real  ! unit energy cost
+  Cv: real  ! unit purchased vehicle cost
+  Ch: real  ! unit holding vehicle cost
+  Cb: real  ! unit battery cost
+  d: array(Nodes,Nodes) of real ! distance matrix
+  min_alpha: real           ! the minimum SoH under control policy
+  t: array(Nodes,Nodes) of real ! Travel time from node 1 to node 2
+  ts: array(Nodes) of real  ! Service time for consumers
+  tb: array(Nodes) of real  ! Service earliest time for consumers
+  te: array(Nodes) of real  ! Service last time for consumers
+  sl: real ! working days in a stage
+   r: real ! inverse refueling rate —— minutes required to charge one unit of energy
+  lambda_n: real ! Ageing coefficient for once normal charging
+  lambda_f: real ! Ageing coefficient for once fast charging
+  beta_0: real  ! Constant factor for SoH
+  beta_1: real  ! Linear term coefficient for SoH
+  beta_2: real  ! Quadratic term coefficient for SoH
+  delta: real   ! Battery calender aging ratio
+  EkmB: real    ! the baseline of energy consumption
+  alphaB: real  ! the baseline of SoH
+  alpha5: array(Vehicles) of real   ! the SoH for last rolling (end of stage 5)
+  M:real        ! the largest te
+  ! Time-dependent Variables
+  Ekm: array(Vehicles,Stages) of mpvar      ! unit Energy consumption per kilometre
+  alpha: array(Vehicles,Stages) of mpvar    ! Battery's SoH at stage s
+  calpha: array(Vehicles,Stages) of mpvar    ! Battery's SoH at stage s before planning
+end-declarations
+
+initializations from filename
+  Q Ce Cv Ch Cb d EkmB alphaB ts tb te sl min_alpha delta r beta_0 beta_1 beta_2 lambda_f lambda_n M alpha5
+end-initializations
+
+
+! Decision variable declaration
+declarations
+  x: array(Nodes, Nodes, Vehicles, Stages) of mpvar    ! routing decision
+  y: array(Vehicles,Stages) of mpvar                   ! Battery changing variables
+  e: array(Nodes, Vehicles, Stages) of mpvar           ! energy level
+  p1: array(Nodes, Vehicles, Stages) of mpvar          ! arrival times at nodes
+  p2: array(Nodes, Vehicles, Stages) of mpvar          ! depature times at nodes
+end-declarations
+
+! Define decision variables as binary variables in system.
+forall(i in Nodes, j in Nodes, v in Vehicles, s in Stages)do
+   x(i,j,v,s) is_binary
+end-do
+forall(v in Vehicles, s in Stages)do
+   y(v,s) is_binary
+end-do
+
+!VehicleCost := nbVehicles*Cv ! we dont need this part, since we calculate it in last rolling
+forall(s in Stages)do
+  !TVehicleCost(s) := VehicleCost/nbStages
+  HoldingCost(s) := nbVehicles*Ch                 ! holding cost part
+  BatteryCost(s) := sum(v in Vehicles)y(v,s) * Cb ! battery replacement cost part
+  EnergyCost(s)  := sum(i in Nodes, j in Nodes, v in Vehicles)x(i,j,v,s)*d(i,j)*Ekm(v,s)*Ce ! energy consumption cost part
+  Obj_stages(s) := sl*HoldingCost(s)+ BatteryCost(s) + sl*EnergyCost(s)
+end-do
+
+! Objective function
+Obj_S := sum(s in Stages)Obj_stages(s)/nbStages
+
+! Return-to-depot constraint
+forall(v in Vehicles, s in Stages)do
+  sum(i in  Chargings+Consumers) x(i,Edepot,v,s) = 1
+  sum(j in  Chargings+Consumers) x(Bdepot,j,v,s) = 1
+end-do
+! infeaslble all the abnormal arcs
+forall(i in Nodes, v in Vehicles, s in Stages)do
+  x(Edepot,i,v,s) = 0
+  x(i,Bdepot,v,s) = 0
+  x(i,i,v,s) = 0
+end-do
+
+! all the consumers must be visited once at each stage
+forall(j in Consumers, s in Stages)do
+  sum(v in Vehicles, i in {Bdepot}+Consumers+Chargings) x(i,j,v,s) = 1
+end-do
+
+! Flow Constraint, the number of vehicle entering a node is equal to leaving vehicles
+forall(i in Chargings + Consumers, v in Vehicles, s in Stages)do
+  sum(h in Chargings + Consumers + {Bdepot} | h <> i) x(h,i,v,s) = sum(j in Chargings + Consumers + {Edepot} | j <> i) x(i,j,v,s)
+end-do
+
+! Energy Consumption Constraints: when travelling on the arcs, it spend energy
+forall(i in {Bdepot}+Consumers, j in Nodes, v in Vehicles, s in Stages)do
+  e(j,v,s) <= e(i,v,s) - d(i,j)*Ekm(v,s)*x(i,j,v,s)+(1-x(i,j,v,s))*Q
+end-do
+
+! Full Charging Policy: after visting a charging nodes, state-of-charging are full
+forall(i in Chargings, j in Nodes, v in Vehicles, s in Stages) do
+  e(j,v,s) <= Q * alpha(v,s) - d(i,j)*Ekm(v,s)*x(i,j,v,s)+(1-x(i,j,v,s))*Q
+end-do
+
+! Time Wasting Constraints: when travelling on the arcs, it spend time
+forall(i in Consumers + Chargings + {Bdepot}, j in Chargings + Consumers+{Edepot}, v in Vehicles, s in Stages)do
+  p1(j,v,s) >= p2(i,v,s) + t(i,j)*x(i,j,v,s) - M* (1 - x(i,j,v,s))
+end-do
+
+! When arriving at Consumers nodes, service times depends on demands
+forall(i in {Bdepot} + Chargings + Consumers, j in Consumers, v in Vehicles, s in Stages)do
+  p2(j,v,s) >= p1(j,v,s) + ts(j)*x(i,j,v,s) - M*(1 - x(i,j,v,s))
+end-do
+
+! When arriving at Charging stations, service time depends on charged energy
+forall(i in {Bdepot} + Chargings + Consumers, j in Chargings, v in Vehicles, s in Stages)do
+  p2(j,v,s) >= p1(j,v,s) + (alpha(v,s)*Q - e(j,v,s))*r*x(i,j,v,s) -  M * (1 - x(i,j,v,s))
+end-do
+
+! Meets the time windows for each vehicle that arrive at customer nodes
+forall(i in {Bdepot}+ Consumers +Chargings, j in Consumers, v in Vehicles, s in Stages)do
+  p1(j,v,s) >= tb(j) - M* (1- x(i,j,v,s))
+  p1(j,v,s) <= te(j)-ts(j) + M* (1- x(i,j,v,s))
+end-do
+
+! Start depot and end depot Initialization
+forall(v in Vehicles, s in Stages)do
+  e(Bdepot,v,s) = Q * alpha(v,s)
+  p1(Bdepot,v,s) = 0
+  p2(Bdepot,v,s) >= 0
+  p1(Edepot,v,s) >= 0
+  p2(Edepot,v,s) = 0
+end-do
+
+! Variable Domains
+forall(j in Nodes, v in Vehicles, s in Stages)do
+  ! state-of-charg can not surpass the battery capacity
+  e(j,v,s) <= alpha(v,s)*Q
+end-do
+
+forall(i in {Edepot} + Chargings + Consumers, j in {Bdepot} + Chargings + Consumers, v in Vehicles, s in Stages)do
+  p1(i,v,s) >= 0
+  p2(j,v,s) >= 0
+end-do
+
+! SoH degradation assumption
+
+forall(v in Vehicles)do
+  ! Battery capacity information initialization
+  calpha(v,1) = alpha5(v)
+end-do
+
+forall(v in Vehicles, s in Stages| s < nbStages)do
+  ! Calculate the SoH after a stage routing
+  calpha(v,s+1) = alpha(v,s) - 365*delta - sl*(lambda_n+lambda_f*sum(i in Nodes,j in Chargings)x(i,j,v,s))
+end-do
+
+forall(v in Vehicles, s in Stages) do
+  ! Considering Battery Swapping between two stages/SoH Control Policy
+  calpha(v,s) - min_alpha >= -y(v,s)
+  ! SoH's periodic degradation
+  alpha(v,s) = calpha(v,s) * (1-y(v,s))  + alphaB * y(v,s)
+  ! Ekm's periodic degradation
+  Ekm(v,s) = (1-y(v,s)) * (beta_0+beta_1*(1-alpha(v,s))+beta_2*(1-alpha(v,s))*(1-alpha(v,s))  )+ y(v,s) * EkmB
+end-do
+
+
+! ==================================================================================================
+! Results
+! ==================================================================================================
+setparam("XPRS_MAXTIME",3600) ! set up runtime limit
+setparam("XPRS_MIPLOG", 2)  ! Enable detailed MIP log output
+setparam("XPRS_VERBOSE", 1)
+
+minimize(Obj_S)
+
+! testing...
+
+
+
+! Give a sloving state...
+if getprobstat = XPRS_OPT then
+  writeln("This Model has an optimal solution...")
+  MIP := 100 * (getobjval - getparam("XPRS_BESTBOUND")) / getobjval
+
+elif getprobstat = XPRS_INF then
+  writeln("The Model has no feasible solution...")
+elif getprobstat = XPRS_UNB then
+  writeln("This Model is without boundaries...")
+else
+  writeln("This Model has unknown solving state...")
+end-if
+writeln("TOTAL COST: ", getsol(Obj_S), " (100%)")
+! include same file.
+include 'Rolling_res.txt'
+
+
+end-model

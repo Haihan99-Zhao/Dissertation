@@ -1,0 +1,237 @@
+===== Calculation Information =====
+The MIP is 27.86010483
+
+------------------------------------------------
+Average COST: 26747.16078 (100%)
+
+===== Cost Breakdowns =====
+Total Vehicle cost: 135000 (63.09080855%)
+Total Battery Swapping cost: 24000 (11.21614374%)
+Total Energy Consumption cost: 50657.28624 (23.67414184%)
+Total Holding cost: 4320 (2.018905874%)
+===== Vehicles =====
+Number of Used Vehicles in each Stage
+Stage1	 :3
+Vehicle	1 travels 41.24
+Vehicle	2 travels 106.16
+Vehicle	3 travels 87.33
+Stage2	 :3
+Vehicle	1 travels 98.61
+Vehicle	2 travels 106.16
+Vehicle	3 travels 43.08
+Stage3	 :3
+Vehicle	1 travels 152.58
+Vehicle	2 travels 117.55
+Vehicle	3 travels 41.24
+Stage4	 :3
+Vehicle	1 travels 173.85
+Vehicle	2 travels 59.46
+Vehicle	3 travels 79.7
+Stage5	 :3
+Vehicle	1 travels 59.46
+Vehicle	2 travels 192.93
+Vehicle	3 travels 155.86
+Stage6	 :3
+Vehicle	1 travels 115.06
+Vehicle	2 travels 59.46
+Vehicle	3 travels 95.8
+Stage7	 :3
+Vehicle	1 travels 173.14
+Vehicle	2 travels 76.16
+Vehicle	3 travels 79.7
+Stage8	 :3
+Vehicle	1 travels 144.34
+Vehicle	2 travels 79.31
+Vehicle	3 travels 239.93
+===== Charging Times =====
+Stage1:0
+Stage2:0
+Stage3:2
+Stage4:2
+Stage5:2
+Stage6:1
+Stage7:1
+Stage8:5
+===== Routes =====
+Stages	 Vehicle ID 	 Routing	 Battery
+Stage 	1	 Vehicle1	 Node1——>Node2	 Battery level 	77.75	 ——>	74.28584
+Stage 	1	 Vehicle1	 Node2——>Node9	 Battery level 	3.46416	 ——>	0
+
+Stage 	1	 Vehicle2	 Node1——>Node3	 Battery level 	77.75	 ——>	71.35256
+Stage 	1	 Vehicle2	 Node3——>Node4	 Battery level 	11.43744	 ——>	6.39744
+Stage 	1	 Vehicle2	 Node4——>Node9	 Battery level 	6.39744	 ——>	0
+
+Stage 	1	 Vehicle3	 Node1——>Node6	 Battery level 	77.75	 ——>	74.13128
+Stage 	1	 Vehicle3	 Node5——>Node9	 Battery level 	4.99464	 ——>	0
+Stage 	1	 Vehicle3	 Node6——>Node5	 Battery level 	11.05272	 ——>	4.99464
+
+
+Stage 	2	 Vehicle1	 Node1——>Node2	 Battery level 	75.5224625	 ——>	72.01965349
+Stage 	2	 Vehicle1	 Node2——>Node5	 Battery level 	13.24850024	 ——>	5.050364307
+Stage 	2	 Vehicle1	 Node5——>Node9	 Battery level 	5.050364307	 ——>	0
+
+Stage 	2	 Vehicle2	 Node1——>Node3	 Battery level 	75.5224625	 ——>	69.05362417
+Stage 	2	 Vehicle2	 Node3——>Node4	 Battery level 	11.56508702	 ——>	6.468838335
+Stage 	2	 Vehicle2	 Node4——>Node9	 Battery level 	6.468838335	 ——>	0
+
+Stage 	2	 Vehicle3	 Node1——>Node6	 Battery level 	75.5224625	 ——>	71.86335594
+Stage 	2	 Vehicle3	 Node6——>Node9	 Battery level 	3.659106558	 ——>	0
+
+
+Stage 	3	 Vehicle1	 Node1——>Node8	 Battery level 	77.75	 ——>	73.71464
+Stage 	3	 Vehicle1	 Node4——>Node9	 Battery level 	6.39744	 ——>	0
+Stage 	3	 Vehicle1	 Node6——>Node7	 Battery level 	72.05984	 ——>	62.54936
+Stage 	3	 Vehicle1	 Node7——>Node4	 Battery level 	77.75	 ——>	6.39744
+Stage 	3	 Vehicle1	 Node8——>Node6	 Battery level 	77.75	 ——>	72.05984
+
+Stage 	3	 Vehicle2	 Node1——>Node3	 Battery level 	73.294925	 ——>	66.7428107
+Stage 	3	 Vehicle2	 Node3——>Node5	 Battery level 	66.7428107	 ——>	58.18445552
+Stage 	3	 Vehicle2	 Node5——>Node9	 Battery level 	5.11539806	 ——>	0
+
+Stage 	3	 Vehicle3	 Node1——>Node2	 Battery level 	73.294925	 ——>	69.74701017
+Stage 	3	 Vehicle3	 Node2——>Node9	 Battery level 	3.547914834	 ——>	0
+
+
+Stage 	4	 Vehicle1	 Node1——>Node8	 Battery level 	73.7730875	 ——>	69.65207482
+Stage 	4	 Vehicle1	 Node3——>Node4	 Battery level 	15.30196172	 ——>	10.15498502
+Stage 	4	 Vehicle1	 Node4——>Node7	 Battery level 	10.15498502	 ——>	6.033972349
+Stage 	4	 Vehicle1	 Node7——>Node9	 Battery level 	73.7730875	 ——>	0
+Stage 	4	 Vehicle1	 Node8——>Node3	 Battery level 	73.7730875	 ——>	15.30196172
+
+Stage 	4	 Vehicle2	 Node1——>Node5	 Battery level 	71.0673875	 ——>	65.87770067
+Stage 	4	 Vehicle2	 Node5——>Node9	 Battery level 	5.189686831	 ——>	0
+
+Stage 	4	 Vehicle3	 Node1——>Node6	 Battery level 	77.75	 ——>	74.13128
+Stage 	4	 Vehicle3	 Node2——>Node9	 Battery level 	3.46416	 ——>	0
+Stage 	4	 Vehicle3	 Node6——>Node2	 Battery level 	9.77088	 ——>	3.46416
+
+
+Stage 	5	 Vehicle1	 Node1——>Node5	 Battery level 	69.796175	 ——>	64.55993698
+Stage 	5	 Vehicle1	 Node5——>Node9	 Battery level 	5.236238024	 ——>	0
+
+Stage 	5	 Vehicle2	 Node1——>Node7	 Battery level 	68.83985	 ——>	62.60170136
+Stage 	5	 Vehicle2	 Node4——>Node9	 Battery level 	41.37390413	 ——>	34.61960501
+Stage 	5	 Vehicle2	 Node7——>Node8	 Battery level 	68.83985	 ——>	52.21661173
+Stage 	5	 Vehicle2	 Node8——>Node4	 Battery level 	68.83985	 ——>	41.37390413
+
+Stage 	5	 Vehicle3	 Node1——>Node3	 Battery level 	75.5224625	 ——>	69.05362417
+Stage 	5	 Vehicle3	 Node2——>Node9	 Battery level 	3.502821598	 ——>	0
+Stage 	5	 Vehicle3	 Node3——>Node6	 Battery level 	20.00787235	 ——>	9.879927457
+Stage 	5	 Vehicle3	 Node6——>Node2	 Battery level 	9.879927457	 ——>	3.502821598
+
+
+Stage 	6	 Vehicle1	 Node1——>Node6	 Battery level 	67.5686375	 ——>	63.71049821
+Stage 	6	 Vehicle1	 Node4——>Node9	 Battery level 	6.820703064	 ——>	0
+Stage 	6	 Vehicle1	 Node6——>Node4	 Battery level 	16.75084429	 ——>	6.820703064
+
+Stage 	6	 Vehicle2	 Node1——>Node5	 Battery level 	64.8629375	 ——>	59.41745557
+Stage 	6	 Vehicle2	 Node5——>Node9	 Battery level 	5.445481927	 ——>	0
+
+Stage 	6	 Vehicle3	 Node1——>Node3	 Battery level 	73.294925	 ——>	66.74281738
+Stage 	6	 Vehicle3	 Node2——>Node9	 Battery level 	3.547911219	 ——>	0
+Stage 	6	 Vehicle3	 Node3——>Node7	 Battery level 	9.931398427	 ——>	8.885263596
+Stage 	6	 Vehicle3	 Node7——>Node2	 Battery level 	73.294925	 ——>	3.547911219
+
+
+Stage 	7	 Vehicle1	 Node1——>Node3	 Battery level 	65.3411	 ——>	58.39470975
+Stage 	7	 Vehicle1	 Node3——>Node8	 Battery level 	24.63706585	 ——>	13.57537717
+Stage 	7	 Vehicle1	 Node5——>Node9	 Battery level 	5.42321907	 ——>	0
+Stage 	7	 Vehicle1	 Node8——>Node5	 Battery level 	65.3411	 ——>	5.42321907
+
+Stage 	7	 Vehicle2	 Node1——>Node4	 Battery level 	62.6354	 ——>	55.52037965
+Stage 	7	 Vehicle2	 Node4——>Node9	 Battery level 	7.115020345	 ——>	0
+
+Stage 	7	 Vehicle3	 Node1——>Node6	 Battery level 	70.1927	 ——>	66.40972224
+Stage 	7	 Vehicle3	 Node2——>Node9	 Battery level 	3.621402112	 ——>	0
+Stage 	7	 Vehicle3	 Node6——>Node2	 Battery level 	10.21439122	 ——>	3.621402112
+
+
+Stage 	8	 Vehicle1	 Node1——>Node7	 Battery level 	62.238875	 ——>	55.64337289
+Stage 	8	 Vehicle1	 Node4——>Node8	 Battery level 	51.13885311	 ——>	39.67501904
+Stage 	8	 Vehicle1	 Node7——>Node4	 Battery level 	62.238875	 ——>	51.13885311
+Stage 	8	 Vehicle1	 Node8——>Node9	 Battery level 	62.238875	 ——>	0
+
+Stage 	8	 Vehicle2	 Node1——>Node8	 Battery level 	77.75	 ——>	73.71464
+Stage 	8	 Vehicle2	 Node2——>Node9	 Battery level 	3.46416	 ——>	0
+Stage 	8	 Vehicle2	 Node8——>Node2	 Battery level 	77.75	 ——>	3.46416
+
+Stage 	8	 Vehicle3	 Node1——>Node3	 Battery level 	67.9651625	 ——>	61.1656052
+Stage 	8	 Vehicle3	 Node3——>Node6	 Battery level 	36.04229627	 ——>	25.3965608
+Stage 	8	 Vehicle3	 Node5——>Node9	 Battery level 	5.308582948	 ——>	0
+Stage 	8	 Vehicle3	 Node6——>Node8	 Battery level 	25.3965608	 ——>	23.63774674
+Stage 	8	 Vehicle3	 Node7——>Node5	 Battery level 	67.9651625	 ——>	5.308582948
+Stage 	8	 Vehicle3	 Node8——>Node7	 Battery level 	67.9651625	 ——>	13.18307027
+
+
+===== Battery Swapping =====
+we need to swap a battery for Vehicle 1 at stage2
+we need to swap a battery for Vehicle 3 at stage3
+we need to swap a battery for Vehicle 2 at stage7
+===== Battery SoH =====
+Vehicle ID 	 SoH
+At stage 	1
+Vehicle ID 	1	 SoH at the beginning of stage 	1	 SoH at the end of stage	0.97135
+Vehicle ID 	2	 SoH at the beginning of stage 	1	 SoH at the end of stage	0.97135
+Vehicle ID 	3	 SoH at the beginning of stage 	1	 SoH at the end of stage	0.97135
+At stage 	2
+Vehicle ID 	1	 SoH at the beginning of stage 	0.97135	 SoH at the end of stage	0.9427
+Vehicle ID 	2	 SoH at the beginning of stage 	0.97135	 SoH at the end of stage	0.9427
+Vehicle ID 	3	 SoH at the beginning of stage 	0.97135	 SoH at the end of stage	0.9427
+At stage 	3
+Vehicle ID 	1	 SoH at the beginning of stage 	1	 SoH at the end of stage	0.94885
+Vehicle ID 	2	 SoH at the beginning of stage 	0.9427	 SoH at the end of stage	0.91405
+Vehicle ID 	3	 SoH at the beginning of stage 	0.9427	 SoH at the end of stage	0.91405
+At stage 	4
+Vehicle ID 	1	 SoH at the beginning of stage 	0.94885	 SoH at the end of stage	0.8977
+Vehicle ID 	2	 SoH at the beginning of stage 	0.91405	 SoH at the end of stage	0.8854
+Vehicle ID 	3	 SoH at the beginning of stage 	1	 SoH at the end of stage	0.97135
+At stage 	5
+Vehicle ID 	1	 SoH at the beginning of stage 	0.8977	 SoH at the end of stage	0.86905
+Vehicle ID 	2	 SoH at the beginning of stage 	0.8854	 SoH at the end of stage	0.83425
+Vehicle ID 	3	 SoH at the beginning of stage 	0.97135	 SoH at the end of stage	0.9427
+At stage 	6
+Vehicle ID 	1	 SoH at the beginning of stage 	0.86905	 SoH at the end of stage	0.8404
+Vehicle ID 	2	 SoH at the beginning of stage 	0.83425	 SoH at the end of stage	0.8056
+Vehicle ID 	3	 SoH at the beginning of stage 	0.9427	 SoH at the end of stage	0.9028
+At stage 	7
+Vehicle ID 	1	 SoH at the beginning of stage 	0.8404	 SoH at the end of stage	0.8005
+Vehicle ID 	2	 SoH at the beginning of stage 	0.8056	 SoH at the end of stage	0.77695
+Vehicle ID 	3	 SoH at the beginning of stage 	0.9028	 SoH at the end of stage	0.87415
+At stage 	8
+Vehicle ID 	1	 SoH at the beginning of stage 	0.8005	 SoH at the end of stage	0.74935
+Vehicle ID 	2	 SoH at the beginning of stage 	1	 SoH at the end of stage	0.9601
+Vehicle ID 	3	 SoH at the beginning of stage 	0.87415	 SoH at the end of stage	0.823
+===== Battery Energy Consumption=====
+Vehicle ID 	 Ekm 	 Work duration
+At stage 	1
+1	 0.168	 445
+2	 0.168	 834
+3	 0.168	 899
+At stage 	2
+1	 0.169874346	 827
+2	 0.1698749563	 834
+3	 0.1698749563	 353
+At stage 	3
+1	 0.168	 888
+2	 0.1720618251	 827
+3	 0.1720618251	 445
+At stage 	4
+1	 0.1715658899	 915.2869382
+2	 0.1745606065	 1741
+3	 0.168	 1326
+At stage 	5
+1	 0.1761264051	 827
+2	 0.1773713004	 834
+3	 0.1698749563	 446
+At stage 	6
+1	 0.1791151015	 834
+2	 0.1831645452	 827
+3	 0.1720616498	 445
+At stage 	7
+1	 0.1824157104	 827
+2	 0.1868440217	 1326
+3	 0.1756257087	 1326
+At stage 	8
+1	 0.1875320475	 861.0766271
+2	 0.168	 445
+3	 0.1785598032	 827

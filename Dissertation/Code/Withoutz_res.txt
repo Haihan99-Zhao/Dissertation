@@ -1,0 +1,97 @@
+fopen("s93_103_5C_1s_v3.txt",F_OUTPUT) ! Uncomment to send output to file
+                                   ! Do same for fclose at end of file
+! ==================================================================================================
+! Results Output Section - Console Version
+! ==================================================================================================
+writeln("===== Calculation Information =====")
+! Calculate MIP
+writeln("The MIP is ", getsol(MIP))
+writeln("")
+! Calculate total cost
+staged_cost := getsol(Obj_S)
+TVehicle_Cost := getsol(VehicleCost)
+TBattery_Cost := getsol(sum(s in Stages)BatteryCost(s))
+TEnergy_Cost := getsol(sl*sum(s in Stages)EnergyCost(s))
+THolding_Cost := getsol(sl*sum(s in Stages)HoldingCost(s))
+! Write objective function values with percentages
+writeln("------------------------------------------------")
+writeln("Average COST: ", staged_cost, " (100%)")
+writeln("")
+
+writeln("===== Cost Breakdowns =====")
+writeln("Total Vehicle cost: ", getsol(TVehicle_Cost),
+       " (", 100*getsol(TVehicle_Cost)/(staged_cost*nbStages), "%)")
+writeln("Total Battery Swapping cost: ", getsol(TBattery_Cost),
+       " (", 100*getsol(TBattery_Cost)/(staged_cost*nbStages), "%)")
+writeln("Total Energy Consumption cost: ", getsol(TEnergy_Cost),
+       " (", 100*getsol(TEnergy_Cost)/(staged_cost*nbStages), "%)")
+writeln("Total Holding cost: ", getsol(THolding_Cost),
+       " (", 100*getsol(THolding_Cost)/(staged_cost*nbStages), "%)")
+
+! Write Vehicle using Plan
+writeln("===== Vehicles =====")
+writeln("Number of Used Vehicles in each Stage")
+forall(s in Stages) do
+    nVehiclesAts(s):= sum(j in Nodes, v in Vehicles) getsol(x(1, j, v , s))
+    writeln("Stage", s, "\t :",nVehiclesAts(s))
+    forall(v in Vehicles)do
+    writeln("Vehicle\t", v, " travels ", sum(i in Nodes,j in Nodes) getsol(x(i,j,v,s)) * d(i,j))
+    end-do
+end-do
+
+! Write Charging Times
+writeln("===== Charging Times =====")
+forall(s in Stages) do
+    nChargingTimes(s):= sum(i in Nodes, j in Chargings, v in Vehicles) getsol(x(i,j,v,s))
+    writeln("Stage", s, ":", nChargingTimes(s))
+end-do
+
+! Write Vehicle Routing Plans
+writeln("===== Routes =====")
+writeln("Stages\t Vehicle ID \t Routing\t Battery")
+forall(s in Stages) do
+  forall(v in Vehicles) do
+ 	forall(i in {Bdepot}+Consumers+{Edepot}, j in Nodes)do
+	if(getsol(x(i,j,v,s))  > 0.5 ) then
+      writeln("Stage \t" , s, "\t Vehicle", v ,"\t Node", i, "——>Node",j,"\t Battery level \t", getsol(e(i,v,s)), "\t ——>\t", getsol(e(i,v,s)-Ekm(v,s)*d(i,j)))
+	end-if
+	end-do
+ 	forall(i in Chargings, j in Nodes)do
+	if(getsol(x(i,j,v,s))  > 0.5 ) then
+      writeln("Stage \t" , s, "\t Vehicle", v ,"\t Node", i, "——>Node",j,"\t Battery level \t",  getsol(alpha(v,s)*Q), "\t ——>\t", getsol(e(j,v,s)))
+    end-if
+    end-do
+    writeln
+  end-do
+  writeln
+end-do
+
+! Wrting Battery using Strategy
+writeln("===== Battery Swapping =====")
+forall(s in Stages,v in Vehicles) do
+    if (getsol(y(v,s)) > 0) then
+        writeln("we need to swap a battery for Vehicle ", v," at stage",s)
+    end-if
+end-do
+
+! Wrting Battery using Information
+writeln("===== Battery SoH =====")
+writeln("Vehicle ID \t SoH")
+forall(s in Stages) do
+    writeln("At stage \t", s)
+    forall(v in Vehicles) do
+        writeln("Vehicle ID \t", v, "\t SoH at the beginning of stage \t", getsol(alpha(v,s)),"\t SoH at the end of stage\t", getsol(halpha(v,s)))
+    end-do
+end-do
+
+! Wrting Battery Energy consumption and work length
+writeln("===== Battery Energy Consumption=====")
+writeln("Vehicle ID \t Ekm \t Work duration")
+forall(s in Stages) do
+    writeln("At stage \t", s)
+    forall(v in Vehicles)do
+       writeln( v, "\t ", getsol(Ekm(v,s)),"\t ", getsol(p1(Edepot, v,s)) -getsol(p2(Bdepot, v, s)))
+    end-do
+end-do
+
+fclose(F_OUTPUT)     ! uncomment to send output to file
